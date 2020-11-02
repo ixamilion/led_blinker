@@ -40,9 +40,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-ADC_HandleTypeDef hadc;
-
-LCD_HandleTypeDef hlcd;
 
 /* USER CODE BEGIN PV */
 
@@ -51,9 +48,6 @@ LCD_HandleTypeDef hlcd;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_ADC_Init(void);
-static void MX_LCD_Init(void);
-static void MX_TS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -91,9 +85,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC_Init();
-  MX_LCD_Init();
-  MX_TS_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -103,6 +94,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -116,7 +108,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Configure the main internal regulator output voltage
   */
@@ -124,8 +115,7 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
-  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -149,124 +139,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_LCD;
-  PeriphClkInit.LCDClockSelection = RCC_RTCCLKSOURCE_LSE;
-
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-/**
-  * @brief ADC Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ADC_Init(void)
-{
-
-  /* USER CODE BEGIN ADC_Init 0 */
-
-  /* USER CODE END ADC_Init 0 */
-
-  ADC_ChannelConfTypeDef sConfig = {0};
-
-  /* USER CODE BEGIN ADC_Init 1 */
-
-  /* USER CODE END ADC_Init 1 */
-  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-  */
-  hadc.Instance = ADC1;
-  hadc.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-  hadc.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc.Init.EOCSelection = ADC_EOC_SEQ_CONV;
-  hadc.Init.LowPowerAutoWait = ADC_AUTOWAIT_DISABLE;
-  hadc.Init.LowPowerAutoPowerOff = ADC_AUTOPOWEROFF_DISABLE;
-  hadc.Init.ChannelsBank = ADC_CHANNELS_BANK_A;
-  hadc.Init.ContinuousConvMode = DISABLE;
-  hadc.Init.NbrOfConversion = 1;
-  hadc.Init.DiscontinuousConvMode = DISABLE;
-  hadc.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T2_CC3;
-  hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
-  hadc.Init.DMAContinuousRequests = DISABLE;
-  if (HAL_ADC_Init(&hadc) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
-  sConfig.Channel = ADC_CHANNEL_4;
-  sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_4CYCLES;
-  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN ADC_Init 2 */
-
-  /* USER CODE END ADC_Init 2 */
-
-}
-
-/**
-  * @brief LCD Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_LCD_Init(void)
-{
-
-  /* USER CODE BEGIN LCD_Init 0 */
-
-  /* USER CODE END LCD_Init 0 */
-
-  /* USER CODE BEGIN LCD_Init 1 */
-
-  /* USER CODE END LCD_Init 1 */
-  hlcd.Instance = LCD;
-  hlcd.Init.Prescaler = LCD_PRESCALER_1;
-  hlcd.Init.Divider = LCD_DIVIDER_16;
-  hlcd.Init.Duty = LCD_DUTY_1_4;
-  hlcd.Init.Bias = LCD_BIAS_1_4;
-  hlcd.Init.VoltageSource = LCD_VOLTAGESOURCE_INTERNAL;
-  hlcd.Init.Contrast = LCD_CONTRASTLEVEL_0;
-  hlcd.Init.DeadTime = LCD_DEADTIME_0;
-  hlcd.Init.PulseOnDuration = LCD_PULSEONDURATION_0;
-  hlcd.Init.MuxSegment = LCD_MUXSEGMENT_DISABLE;
-  hlcd.Init.BlinkMode = LCD_BLINKMODE_OFF;
-  hlcd.Init.BlinkFrequency = LCD_BLINKFREQUENCY_DIV8;
-  if (HAL_LCD_Init(&hlcd) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN LCD_Init 2 */
-
-  /* USER CODE END LCD_Init 2 */
-
-}
-
-/**
-  * @brief TS Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TS_Init(void)
-{
-
-  /* USER CODE BEGIN TS_Init 0 */
-
-  /* USER CODE END TS_Init 0 */
-
-  /* USER CODE BEGIN TS_Init 1 */
-
-  /* USER CODE END TS_Init 1 */
-  /* USER CODE BEGIN TS_Init 2 */
-
-  /* USER CODE END TS_Init 2 */
-
 }
 
 /**
@@ -284,21 +156,11 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(IDD_CNT_EN_GPIO_Port, IDD_CNT_EN_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LD4_Pin|LD3_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : IDD_CNT_EN_Pin */
-  GPIO_InitStruct.Pin = IDD_CNT_EN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(IDD_CNT_EN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
@@ -308,6 +170,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 }
 

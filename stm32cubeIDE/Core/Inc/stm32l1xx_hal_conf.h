@@ -49,7 +49,7 @@
   */
 
 #define HAL_MODULE_ENABLED
-#define HAL_ADC_MODULE_ENABLED
+/*#define HAL_ADC_MODULE_ENABLED   */
 /*#define HAL_CRYP_MODULE_ENABLED   */
 /*#define HAL_COMP_MODULE_ENABLED   */
 /*#define HAL_CRC_MODULE_ENABLED   */
@@ -59,7 +59,7 @@
 /*#define HAL_I2S_MODULE_ENABLED   */
 /*#define HAL_IRDA_MODULE_ENABLED   */
 /*#define HAL_IWDG_MODULE_ENABLED   */
-#define HAL_LCD_MODULE_ENABLED
+/*#define HAL_LCD_MODULE_ENABLED   */
 /*#define HAL_NOR_MODULE_ENABLED   */
 /*#define HAL_OPAMP_MODULE_ENABLED   */
 /*#define HAL_PCD_MODULE_ENABLED   */
