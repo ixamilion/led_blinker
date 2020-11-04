@@ -70,7 +70,6 @@
 void NMI_Handler(void)
 {
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
 
@@ -216,11 +215,15 @@ void RCC_IRQHandler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-
+	if ((user_mode <<= 1) == 0x00) {
+		user_mode = 0x01;
+	}
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
-  HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+
+	// Сброс таймера на старший бит 0
+	bam_driver_set_glow_level(user_mode);
   /* USER CODE END EXTI0_IRQn 1 */
 }
 
