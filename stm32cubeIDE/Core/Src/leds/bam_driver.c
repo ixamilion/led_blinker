@@ -118,17 +118,29 @@ static void _update_frame(void)
 
 	switch (l->mode->func) {
 	case LF_CONSTANT:
-		glow = (uint8_t)((l->mode->glow_rate * 255) / 100);
+		glow = (uint8_t)((l->mode->end_glow_rate * 255) / 100);
 		break;
 
-	case LF_LINEAR:
-		glow = (uint8_t)((l->mode->glow_rate * 255) / 100 * (l->mode->time - l->downcounter));
+	case LF_LINEAR: {
+		uint32_t k = 255;
+		k *= (l->mode->time - l->downcounter);
+		k /= l->mode->time;
+
+		if (l->mode->start_glow_rate < l->mode->end_glow_rate) {
+			glow = l->mode->start_glow_rate * 255 / 100;
+			glow += (uint8_t)(((l->mode->end_glow_rate - l->mode->start_glow_rate) * k) / 100);
+		} else {
+			glow = l->mode->start_glow_rate * 255 / 100;
+			glow -= (uint8_t)(((l->mode->start_glow_rate - l->mode->end_glow_rate) * k) / 100);
+		}
+
 		break;
+	}
 
 	case LF_UNDEFINED:
 	default:
 		l->mode->func= LF_CONSTANT;
-		l->mode->glow_rate = 0;
+		l->mode->end_glow_rate = 0;
 	}
 
 	l->frame_glow_lvl = glow;

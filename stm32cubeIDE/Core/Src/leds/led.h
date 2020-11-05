@@ -23,11 +23,10 @@ enum led_func
 //
 struct led_mode
 {
-	enum led_func func;          // Функция изменения
-	uint32_t      time;          // Время исполнения
-	uint8_t       glow_rate;     // Конечная яркость, % [0..100]
-
-	struct led_mode *next;       //
+	enum led_func func;              // Функция изменения
+	uint32_t      time;              // Время исполнения
+	uint8_t       start_glow_rate;   // Начальная яркость, % [0..100]
+	uint8_t       end_glow_rate;     // Конечная яркость,  % [0..100]
 };
 
 //
