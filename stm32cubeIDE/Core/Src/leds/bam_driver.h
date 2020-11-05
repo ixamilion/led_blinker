@@ -42,6 +42,12 @@
 // Получим следующие периоды прерваний на 10 000 us
 // 5000 + 2500 + 1250 + 625 + 312 + 156 + 78 + 39 + ...
 
+
+
+
+#define BAM_FRAME_PERIOD_MS     (10)
+
+#include "leds/led.h"
 #include "stdio.h"
 
 // Настройка драйвера светодиода
@@ -50,7 +56,7 @@ void bam_driver_init(void);
 // Старт системы драйвера светодиода
 void bam_driver_start(void);
 
-// Задаем яркость
-void bam_driver_set_glow_level(uint8_t lvl);
+// Задаем рабочий режим
+void bam_driver_set_mode(struct led_mode *mode);
 
 #endif /* SRC_LEDS_BAM_DRIVER_H_ */

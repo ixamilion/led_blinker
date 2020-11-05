@@ -215,15 +215,10 @@ void RCC_IRQHandler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-	if ((user_mode <<= 1) == 0x00) {
-		user_mode = 0x01;
-	}
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
-
-	// Сброс таймера на старший бит 0
-	bam_driver_set_glow_level(user_mode);
+  led_set_next_mode();
   /* USER CODE END EXTI0_IRQn 1 */
 }
 
